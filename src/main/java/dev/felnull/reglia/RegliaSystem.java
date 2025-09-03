@@ -1,6 +1,7 @@
 package dev.felnull.reglia;
 
 import dev.felnull.reglia.commands.CommandSource;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -14,6 +15,7 @@ public final class RegliaSystem extends JavaPlugin {
     private SendQueue sendQueue;
     public static RegliaSystem INSTANCE;
     public static String serverIdCache;
+    private RegliaAPI apiImpl;
 
     @Override
     public void onEnable() {
@@ -53,12 +55,19 @@ public final class RegliaSystem extends JavaPlugin {
         velocityIdListener.kickOffServerIdQuery();
         serverIdCache = velocityIdListener.getServerId();
 
+        apiImpl = new RegliaAPIImpl(notifyService, "1.0");
+        Bukkit.getServicesManager().register(RegliaAPI.class, apiImpl, this, org.bukkit.plugin.ServicePriority.Normal);
+
         getLogger().info("[Reglia] Enabled.");
 
     }
 
     @Override
     public void onDisable() {
+        if (apiImpl != null) {
+            Bukkit.getServicesManager().unregister(RegliaAPI.class, apiImpl);
+            apiImpl = null;
+        }
         if (sendQueue != null) sendQueue.shutdown(); // 先に送信ワーカー停止（JDAに依存してるなら尚更）
         if (botRuntime != null) botRuntime.stop();   // 次にJDAを停止
         getLogger().info("[Reglia] Disabled.");
@@ -86,5 +95,9 @@ public final class RegliaSystem extends JavaPlugin {
                 }
             }
         }
+    }
+
+    public static RegliaAPI getRegliaAPI() {
+        return Bukkit.getServicesManager().load(RegliaAPI.class);
     }
 }

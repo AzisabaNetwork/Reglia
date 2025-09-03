@@ -42,6 +42,18 @@ public class NotifyService {
         return allTrueAggregate(futures);
     }
 
+    public java.util.concurrent.CompletableFuture<Boolean> notifyAsync(String formatName, java.util.Map<String,String> data) {
+        return notifyAsync(new Notification(formatName, data, null, null, java.util.Collections.emptyList()));
+    }
+
+    public java.util.concurrent.CompletableFuture<Boolean> notifyAsync(String formatName, java.lang.String message) {
+        return notifyAsync(Notification.simple(formatName, message));
+    }
+
+    public java.util.concurrent.CompletableFuture<Boolean> notifyAsync(String formatName, java.util.Map<String,String> data, java.util.List<String> tags) {
+        return notifyAsync(new Notification(formatName, data, null, null, tags));
+    }
+
     /** allOf集約（どれかfalseならfalse、例外が一つでもあれば例外） */
     private static CompletableFuture<Boolean> allTrueAggregate(List<CompletableFuture<Boolean>> futures) {
         CompletableFuture<Void> all = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
