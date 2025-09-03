@@ -1,0 +1,4 @@
+name: "info"
+channel: "123456789012345678"
+priority: 1
+format: "[Reglia:{time}] [INFO] {message}"

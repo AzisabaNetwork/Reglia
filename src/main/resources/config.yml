@@ -1,0 +1,11 @@
+discord:
+  token: "BOT_TOKEN"
+  intents:
+    messageContent: false
+
+queue:
+  throttleMs: 120
+
+time:
+  pattern: "uuuu-MM-dd HH:mm:ss"
+  zone: "Asia/Tokyo"

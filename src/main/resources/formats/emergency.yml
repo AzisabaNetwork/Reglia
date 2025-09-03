@@ -1,0 +1,4 @@
+name: "emergency"
+channel: "345678901234567890"
+priority: 3
+format: "**[Reglia:{time}] [EMERGENCY]** {message}"

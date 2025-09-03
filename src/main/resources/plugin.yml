@@ -1,0 +1,12 @@
+name: RegliaSystem
+version: '${project.version}'
+main: dev.felnull.reglia.RegliaSystem
+api-version: '1.16'
+commands:
+  dnotice:
+    description: Send a Discord notification by format
+    usage: /dnotice <format> <message...>
+    permission: reglia.notify
+permissions:
+  reglia.notify:
+    default: op
